@@ -1,28 +1,37 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-console.log(galleryItems);
-
 const galleryContainet = document.querySelector('.gallery');
 
 function createGallery() {
   const galleryMarkup = galleryItems
-    .map(({ preview, description }) => {
-      return `<li class="gallery__item">
+    .map(({ preview, description, original }) => {
+      return `<div class="gallery__item">
+      <a class="gallery__link" href="${original}">
   <img src="${preview}" alt="${description}" class="gallery__image">
-</li>`;
+  </a>
+</div>`;
     })
     .join('');
   galleryContainet.insertAdjacentHTML('afterbegin', galleryMarkup);
 }
 createGallery();
 
-function receivingUrl(event) {
+function openOriginalImg(event) {
+  window.addEventListener('keydown', closedOriginalImg);
+  event.preventDefault();
   const galleryItem = galleryItems.find(
     ({ description }) => event.target.getAttribute('alt') === description,
   );
-
-  return galleryItem.original;
+  const instance = basicLightbox.create(`<img src="${galleryItem.original}">`);
+  instance.show();
 }
 
-galleryContainet.addEventListener('click', receivingUrl);
+function closedOriginalImg(event) {
+  if (event.code === 'Escape') {
+    document.querySelector('.basicLightbox').remove();
+  }
+  window.removeEventListener('keydown', closedOriginalImg);
+}
+
+galleryContainet.addEventListener('click', openOriginalImg);
