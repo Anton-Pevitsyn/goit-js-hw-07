@@ -4,18 +4,18 @@ import { galleryItems } from './gallery-items.js';
 const galleryContainet = document.querySelector('.gallery');
 
 function createGallery() {
-  const galleryMarkup = galleryItems
-    .map(({ preview, description, original }) => {
-      return `<div class="gallery__item">
+  return galleryItems
+    .map(
+      ({ preview, description, original }) =>
+        `<div class="gallery__item">
       <a class="gallery__link" href="${original}">
-  <img src="${preview}" alt="${description}" class="gallery__image">
-  </a>
-</div>`;
-    })
+    <img src="${preview}" alt="${description}" class="gallery__image">
+   </a>
+</div>`,
+    )
     .join('');
-  galleryContainet.insertAdjacentHTML('afterbegin', galleryMarkup);
 }
-createGallery();
+galleryContainet.insertAdjacentHTML('afterbegin', createGallery());
 
 function openOriginalImg(event) {
   window.addEventListener('keydown', closedOriginalImg);

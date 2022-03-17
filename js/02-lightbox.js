@@ -5,26 +5,25 @@ console.log(galleryItems);
 const galleryContainet = document.querySelector('.gallery');
 
 function createGallery() {
-  const galleryMarkup = galleryItems
-    .map(({ preview, description, original }) => {
-      return `<a class="gallery__item" href="${original}">
-  <img class="gallery__image" src="${preview}" alt="${description}" />
-</a>`;
-    })
+  return galleryItems
+    .map(
+      ({ preview, description, original }) =>
+        `<li>
+            <a class="gallery__item" href="${original}">
+                <img class="gallery__image" src="${preview}" alt="${description}" />
+            </a>
+        </li>`,
+    )
     .join('');
-  galleryContainet.insertAdjacentHTML('afterbegin', galleryMarkup);
-}
-createGallery();
-
-function openOriginalImg(event) {
-  event.preventDefault();
-  const gallery = new SimpleLightbox('.gallery a');
-  console.log();
-  const galleryItem = galleryItems.find(
-    ({ description }) => event.target.getAttribute('alt') === description,
-  );
-
-  gallery.open(galleryItem);
 }
 
-galleryContainet.addEventListener('click', openOriginalImg);
+galleryContainet.insertAdjacentHTML('afterbegin', createGallery());
+
+const lightbox = new SimpleLightbox('.gallery__item', {
+  animationSpeed: 250,
+  loop: true,
+  enableKeyboard: true,
+  preloading: true,
+  docClose: true,
+  captionsData: 'alt',
+});
